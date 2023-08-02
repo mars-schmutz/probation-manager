@@ -28,7 +28,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan("combined"));
 dotenv.config();
 
-mongoose.connect("mongodb://mschmutz:51tF!1&VP@127.0.0.1:27017/probation").then(() => {
+mongoose.connect(`mongodb://${process.env.USER}:${process.env.PASSWD}@127.0.0.1:27017/probation`).then(() => {
     console.log("Connected to MongoDB...");
 }).catch((err) => {
     console.log("Error connecting to MongoDB...");
