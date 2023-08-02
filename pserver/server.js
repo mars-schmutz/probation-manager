@@ -2,13 +2,14 @@ const RedisStore = require("connect-redis").default;
 const cors = require("cors");
 const dotenv = require("dotenv");
 const express = require("express");
-const { User } = require("./models/user");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const redis = require("redis");
 const session = require("express-session");
+const { User } = require("./models/user");
+const userRoutes = require("./routes/users");
 dotenv.config();
 
 const redisClient = redis.createClient();
@@ -87,32 +88,7 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-// Authenticate user
-app.post('/login', passport.authenticate('local'), (req, res) => {
-    console.log("User authenticated...");
-    res.sendStatus(201);
-});
-
-// Create user
-app.post('/register', (req, res) => {
-    User.countDocuments({ username: req.body.user }).then((count) => {
-        let count = false; // TODO: check countDocuments() docs & fix
-        if (err) {
-            console.error(`Error counting: ${err}`);
-        } else if (count > 0) {
-            console.log(`User ${req.body.user} already exists...`);
-            res.sendStatus(409);
-        } else {
-            var user = new User({ username: req.body.user });
-            user.setEncryptedPassword(req.body.passwd).then(() => {
-                user.save().then(() => {
-                    res.sendStatus(201);
-                });
-            });
-        }
-    });
-})
-
+app.use("/", userRoutes);
 app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
