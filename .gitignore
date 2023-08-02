@@ -1,0 +1,4 @@
+pserver/node_modules
+pserver/.env
+pclient/node_modules
+docs
