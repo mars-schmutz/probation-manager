@@ -54,9 +54,12 @@ mongoose.connect(`mongodb://${process.env.USER}:${process.env.PASSWD}@127.0.0.1:
 });
 
 passport.use(new passportLocal.Strategy({
-    username: "user",
-    password: "passwd",
+    usernameField: "user",
+    passwordField: "passwd",
 }, function(username, password, done) {
+    // TODO: MAKE SURE TO REMOVE
+    console.log(`Authenticating user ${username}...`);
+    console.log(`Password: ${password}`);
     User.findOne({
         username: username
     }).then((user) => {

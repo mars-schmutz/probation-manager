@@ -5,6 +5,7 @@ const { User } = require("../models/user");
 
 // Authenticate user
 router.post('/login', passport.authenticate('local'), (req, res) => {
+    console.log(req.body);
     console.log("User authenticated...");
     res.sendStatus(201);
 });
